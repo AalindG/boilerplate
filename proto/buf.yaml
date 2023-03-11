@@ -2,6 +2,3 @@ version: v1
 name: buf.build/aalindg/boilerplate
 deps:
   - buf.build/googleapis/googleapis
-lint:
-  use:
-    - DEFAULT
