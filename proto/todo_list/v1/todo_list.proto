@@ -1,0 +1,88 @@
+syntax="proto3";
+
+package todo_list.v1;
+
+option go_package="/todo_list/v1";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+service TodoListService {
+  rpc CreateList(CreateListRequest) returns (CreateListResponse){
+    option (google.api.http) ={
+      post: "/vi/lists/add",
+      body: "*"
+    };
+  };
+  rpc AddListElement(AddListElementRequest) returns (AddListElementResponse){
+    option (google.api.http) ={
+      post: "/vi/lists/element/add",
+      body: "*"
+    };
+  };
+
+  rpc GetList (GetListRequest) returns (GetListResponse){
+    option (google.api.http) ={
+      get: "/vi/lists/{list_id}",
+    };
+  };
+  rpc FetchAllLists (FetchAllListsRequest) returns (stream FetchAllListsResponse){
+    option (google.api.http) ={
+      get: "/vi/lists",
+    };
+  };
+}
+
+
+message CreateListRequest{
+  string title=1;
+  string user_id=2;
+};
+
+message CreateListResponse{
+  List list=1;
+};
+
+message AddListElementRequest{
+  string list_id=1;
+  Element element=2;
+};
+
+message AddListElementResponse{
+  List list=1;
+};
+
+message GetListRequest{
+  string list_id=1;
+};
+
+message GetListResponse{
+  List list =1;
+};
+message FetchAllListsRequest{};
+
+message FetchAllListsResponse{
+  List list =1;
+};
+
+enum PRIORITY{
+  PRIORITY_P0_UNSPECIFIED = 0;
+  PRIORITY_P1 = 1;
+  PRIORITY_P2 = 2;
+  PRIORITY_P3 = 3;  
+}
+
+message List {
+  string list_id=1;
+  string title = 2;
+  repeated Element elements = 3;
+  string created_by=4;
+}
+
+message Element {
+  string text=1;
+  bool is_done=2;
+  PRIORITY priority = 3;
+  google.protobuf.Timestamp created_at=4;
+}
+

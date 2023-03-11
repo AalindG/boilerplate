@@ -1,0 +1,55 @@
+syntax= "proto3";
+
+package user.v1;
+
+option go_package="/user.v1";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+service UserService {
+  rpc AddUser(AddUserRequest) returns (AddUserResponse) {
+    option (google.api.http) ={
+      post: "/vi/users/add",
+      body: "*"
+    };
+  };
+  rpc ListUsers(ListUsersRequest) returns (stream ListUsersResponse){
+    option (google.api.http) ={
+      get: "/vi/users/list-all",
+    };
+  };
+  rpc GetUser(GetUserRequest) returns (GetUserResponse){
+    option (google.api.http) ={
+      get: "/vi/users/{user_id}",
+    };
+  };
+}
+
+message AddUserRequest {
+  string name =1;
+  string email=2;
+};
+
+message AddUserResponse {
+  User user=1;
+};
+
+message ListUsersRequest {};
+
+message ListUsersResponse {
+  User user=1;
+};
+message GetUserRequest {
+  string user_id=1;
+};
+
+message GetUserResponse {
+  User user=1;
+};
+message User {
+  string user_id = 1;
+  string name = 2;
+  string email = 3;
+  google.protobuf.Timestamp create_time = 4;
+};
