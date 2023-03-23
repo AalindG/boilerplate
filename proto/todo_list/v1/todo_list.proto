@@ -2,7 +2,7 @@ syntax="proto3";
 
 package todo_list.v1;
 
-option go_package="/todo_list/v1";
+option go_package="/protos/todo_list/v1";
 
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";

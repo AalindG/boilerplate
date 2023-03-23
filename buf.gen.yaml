@@ -4,9 +4,9 @@ managed:
   go_package_prefix:
       default: github.com/aalindg/boilerplate/proto
       except:
-        - buf.build/googleapis/googleapis
         - buf.build/grpc-ecosystem/grpc-gateway
-      
+        - buf.build/googleapis/googleapis
+        - buf.build/bufbuild/validate-go
 plugins:
   - plugin: go
     out: proto
@@ -17,4 +17,7 @@ plugins:
   - plugin: grpc-gateway
     out: proto
     opt: paths=source_relative
+  - plugin: buf.build/bufbuild/validate-go
+    out: gen
+
 
