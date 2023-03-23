@@ -10,25 +10,25 @@ import "google/api/annotations.proto";
 service TodoListService {
   rpc CreateList(CreateListRequest) returns (CreateListResponse){
     option (google.api.http) ={
-      post: "/vi/lists/add",
+      post: "/v1/lists/add",
       body: "*"
     };
   };
   rpc AddListElement(AddListElementRequest) returns (AddListElementResponse){
     option (google.api.http) ={
-      post: "/vi/lists/element/add",
+      post: "/v1/lists/{list_id}/elements/add",
       body: "*"
     };
   };
 
   rpc GetList (GetListRequest) returns (GetListResponse){
     option (google.api.http) ={
-      get: "/vi/lists/{list_id}",
+      get: "/v1/lists/{list_id}",
     };
   };
   rpc FetchAllLists (FetchAllListsRequest) returns (stream FetchAllListsResponse){
     option (google.api.http) ={
-      get: "/vi/lists",
+      get: "/v1/lists",
     };
   };
 }

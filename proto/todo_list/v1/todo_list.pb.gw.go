@@ -77,6 +77,23 @@ func request_TodoListService_AddListElement_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["list_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "list_id")
+	}
+
+	protoReq.ListId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "list_id", err)
+	}
+
 	msg, err := client.AddListElement(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -92,6 +109,23 @@ func local_request_TodoListService_AddListElement_0(ctx context.Context, marshal
 	}
 	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["list_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "list_id")
+	}
+
+	protoReq.ListId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "list_id", err)
 	}
 
 	msg, err := server.AddListElement(ctx, &protoReq)
@@ -182,7 +216,7 @@ func RegisterTodoListServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/todo_list.v1.TodoListService/CreateList", runtime.WithHTTPPathPattern("/vi/lists/add"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/todo_list.v1.TodoListService/CreateList", runtime.WithHTTPPathPattern("/v1/lists/add"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -207,7 +241,7 @@ func RegisterTodoListServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/todo_list.v1.TodoListService/AddListElement", runtime.WithHTTPPathPattern("/vi/lists/element/add"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/todo_list.v1.TodoListService/AddListElement", runtime.WithHTTPPathPattern("/v1/lists/{list_id}/elements/add"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -232,7 +266,7 @@ func RegisterTodoListServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/todo_list.v1.TodoListService/GetList", runtime.WithHTTPPathPattern("/vi/lists/{list_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/todo_list.v1.TodoListService/GetList", runtime.WithHTTPPathPattern("/v1/lists/{list_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -303,7 +337,7 @@ func RegisterTodoListServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/todo_list.v1.TodoListService/CreateList", runtime.WithHTTPPathPattern("/vi/lists/add"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/todo_list.v1.TodoListService/CreateList", runtime.WithHTTPPathPattern("/v1/lists/add"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -325,7 +359,7 @@ func RegisterTodoListServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/todo_list.v1.TodoListService/AddListElement", runtime.WithHTTPPathPattern("/vi/lists/element/add"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/todo_list.v1.TodoListService/AddListElement", runtime.WithHTTPPathPattern("/v1/lists/{list_id}/elements/add"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -347,7 +381,7 @@ func RegisterTodoListServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/todo_list.v1.TodoListService/GetList", runtime.WithHTTPPathPattern("/vi/lists/{list_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/todo_list.v1.TodoListService/GetList", runtime.WithHTTPPathPattern("/v1/lists/{list_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -369,7 +403,7 @@ func RegisterTodoListServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/todo_list.v1.TodoListService/FetchAllLists", runtime.WithHTTPPathPattern("/vi/lists"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/todo_list.v1.TodoListService/FetchAllLists", runtime.WithHTTPPathPattern("/v1/lists"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -389,13 +423,13 @@ func RegisterTodoListServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 }
 
 var (
-	pattern_TodoListService_CreateList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"vi", "lists", "add"}, ""))
+	pattern_TodoListService_CreateList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "lists", "add"}, ""))
 
-	pattern_TodoListService_AddListElement_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"vi", "lists", "element", "add"}, ""))
+	pattern_TodoListService_AddListElement_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4}, []string{"v1", "lists", "list_id", "elements", "add"}, ""))
 
-	pattern_TodoListService_GetList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"vi", "lists", "list_id"}, ""))
+	pattern_TodoListService_GetList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "lists", "list_id"}, ""))
 
-	pattern_TodoListService_FetchAllLists_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"vi", "lists"}, ""))
+	pattern_TodoListService_FetchAllLists_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "lists"}, ""))
 )
 
 var (

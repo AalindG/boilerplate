@@ -20,21 +20,23 @@ const (
 )
 
 func main() {
-	lis, err := net.Listen("tcp", addr)
+	lis, err := net.Listen("tcp", ":8080")
+
 	if err != nil {
 		log.Fatalln("Failed to listen at port: ", port)
 	}
 
 	gs := grpc.NewServer(
-		grpc.Creds(insecure.NewCredentials()),
+	// grpc.Creds(insecure.NewCredentials()),
 	)
 
 	user.RegisterUserServiceServer(gs, server.New())
 	todo_listv1.RegisterTodoListServiceServer(gs, server.New())
 
-	log.Println("Serving gRPC on https://", addr)
+	log.Println("Serving gRPC on 0.0.0.0:8080")
+
 	go func() {
-		log.Fatal(gs.Serve(lis))
+		log.Fatalln(gs.Serve(lis))
 	}()
 
 	conn, err := grpc.DialContext(
@@ -44,7 +46,7 @@ func main() {
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {
-		log.Fatalln("Failed to dial serer: ", err)
+		log.Fatalln("Failed to dial server:", err)
 	}
 
 	gwmux := runtime.NewServeMux()
@@ -53,6 +55,7 @@ func main() {
 	if err != nil {
 		log.Fatalln("Failed to register gateway: ", err)
 	}
+	err = todo_listv1.RegisterTodoListServiceHandler(context.Background(), gwmux, conn)
 
 	gwServer := &http.Server{
 		Addr:    ":8090",
